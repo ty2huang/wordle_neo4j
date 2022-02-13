@@ -1,0 +1,26 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>Neo4Wordle</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Neo4Wordle</h1>
+        <p id="introParagraph">Go to "<a href="https://wordlegame.org/" target="_blank" rel="noopener noreferrer">wordlegame.org</a>" to enable this extension.</p>
+        <div id="functionality" style="display:none">
+            <p>First, setup a neo4j database for wordle 
+                (click <a href="https://github.com/ty2huang/wordle_neo4j" target="_blank" rel="noopener noreferrer">here</a> for more informations). 
+                Then, use this extension to autogenerate the neo4j queries!</p>
+            <p><strong>Your neo4j/cypher query:</strong></p>
+            <textarea id="queryString" style="overflow:hidden"></textarea>
+            <br><br>
+            <button class="btn" id="getWords">Get Possible Words</button>
+        </div>
+    </div>
+    <script src="popup.js"></script>
+</body>
+
+</html>

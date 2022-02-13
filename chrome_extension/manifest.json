@@ -1,0 +1,13 @@
+{
+    "manifest_version": 3,
+    "name": "Neo4Wordle",
+    "description": "Generates the neo4j query for Wordle",
+    "version": "0.1.0",
+    "action": {
+        "default_popup": "popup.html"
+    },
+    "permissions": [
+        "activeTab",
+        "tabs"
+    ]
+}
