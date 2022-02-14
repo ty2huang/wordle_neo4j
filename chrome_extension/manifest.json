@@ -1,9 +1,9 @@
 {
-    "manifest_version": 3,
+    "manifest_version": 2,
     "name": "Neo4Wordle",
     "description": "Generates the neo4j query for Wordle",
     "version": "0.1.0",
-    "action": {
+    "browser_action": {
         "default_popup": "popup.html"
     },
     "permissions": [
