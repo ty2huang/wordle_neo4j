@@ -23,9 +23,10 @@ function generateQuery() {
             pathsCount++;
             matchClause.push(`p${pathsCount}=(n)-[:POS${idx+1}]->(:Letter{char:'${info.correct}'})`);
             returnList.push(`p${pathsCount}`);
-        }
-        for (const letter of info.incorrect) {
-            whereClause.push(`NOT EXISTS {(n)-[:POS${idx+1}]->(:Letter{char:'${letter}'})}`);
+        } else {
+            for (const letter of info.incorrect) {
+                whereClause.push(`NOT EXISTS {(n)-[:POS${idx+1}]->(:Letter{char:'${letter}'})}`);
+            }
         }
     }
 
@@ -75,28 +76,34 @@ chrome.runtime.onMessage.addListener(function(request) {
 
     div.querySelectorAll('.Row-locked-in').forEach(x => {
         const letterCountInWord = new Map();
+        
+        const correctClass = 'letter-correct';
+        const elsewhereClass = 'letter-elsewhere';
+        const absentClass = 'letter-absent';
+
         let index = 0;
         for (const node of x.children) {
-            const letter = node.innerText[0].toLowerCase()
-            const correctClass = 'letter-correct';
-            const elsewhereClass = 'letter-elsewhere';
-            const absentClass = 'letter-absent';
-
+            const letter = node.innerText[0].toLowerCase();
+            if (!node.classList.contains(absentClass)) {
+                letterCountInWord[letter] = (letterCountInWord[letter] || 0 ) + 1;
+            }
+            if (node.classList.contains(correctClass)) {
+                positionsInfo[index].correct = letter
+            } else if (node.classList.contains(elsewhereClass)) {
+                positionsInfo[index].incorrect.push(letter)
+            }
+            index++;
+        }
+        
+        for (const node of x.children) {
+            const letter = node.innerText[0].toLowerCase();
             if (node.classList.contains(absentClass)) {
                 if ((letterCountInWord[letter] || 0) > 0) {
                     upperLimits[letter] = letterCountInWord[letter];
                 } else {
                     absentLetters.add(letter);
                 }
-            } else {
-                letterCountInWord[letter] = (letterCountInWord[letter] || 0 ) + 1;
-                if (node.classList.contains(correctClass)) {
-                    positionsInfo[index].correct = letter
-                } else {
-                    positionsInfo[index].incorrect.push(letter)
-                }
             }
-            index++;
         }
 
         for (const [letter, count] of Object.entries(letterCountInWord)) {
